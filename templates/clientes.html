@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Clientes - Mi app de facturación{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Clientes</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">Añadir cliente</div>
+      <div class="card-body">
+        <form method="post" action="/clientes">
+          <div class="mb-3">
+            <label class="form-label">Nombre *</label>
+            <input type="text" name="nombre" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">NIF/CIF</label>
+            <input type="text" name="nif" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" name="direccion" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="telefono" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">Lista de clientes</div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>NIF</th>
+              <th>Dirección</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in clientes %}
+            <tr>
+              <td>{{ c.id }}</td>
+              <td>{{ c.nombre }}</td>
+              <td>{{ c.nif }}</td>
+              <td>{{ c.direccion }}</td>
+              <td>{{ c.email }}</td>
+              <td>{{ c.telefono }}</td>
+              <td>
+                <a href="/clientes/eliminar/{{ c.id }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este cliente?');">🗑️ Eliminar</a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="7" class="text-center">No hay clientes aún.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - TU FACTURADOR{% endblock %}
+
+{% block content %}
+
+<!-- ================== BANNER CON TARJETA FLOTANTE ================== -->
+
+<div class="banner-dashboard mb-4 d-flex justify-content-center" style="padding: 80px 20px;">
+
+  <div style="
+      background: rgba(255,255,255,0.93);
+      padding: 30px 60px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 25px rgba(0,0,0,0.25);
+      ">
+      
+      <h1 style="font-size: 42px; font-weight: 800; color:#0b1a69;">
+        Bienvenido 👋
+      </h1>
+
+      <p style="font-size: 20px; font-weight: 500; color:#0b1a69;">
+        Mantén el control de tu negocio.
+      </p>
+  </div>
+
+</div>
+
+<!-- ================== TUS TARJETAS DE RESUMEN ================== -->
+
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5>Mis beneficios</h5>
+        <h3>{{ "%.2f"|format(beneficio) }} €</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5>Mis ingresos</h5>
+        <h3 style="color: green;">{{ "%.2f"|format(total_ingresos) }} €</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5>Mis gastos</h5>
+        <h3 style="color: red;">{{ "%.2f"|format(total_gastos) }} €</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4 class="mt-4">Accesos rápidos</h4>
+
+<div class="row mt-3">
+  <div class="col-md-3">
+    <a href="/facturas" class="btn btn-primary w-100 p-3">📄 Facturas</a>
+  </div>
+  <div class="col-md-3">
+    <a href="/gastos" class="btn btn-primary w-100 p-3">💸 Gastos</a>
+  </div>
+  <div class="col-md-3">
+    <a href="/proveedores" class="btn btn-primary w-100 p-3">📁 Proveedores</a>
+  </div>
+  <div class="col-md-3">
+    <a href="/clientes" class="btn btn-primary w-100 p-3">👥 Clientes</a>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

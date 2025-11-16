@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Gastos - Mi app de facturación{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Gastos</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">Registrar gasto</div>
+      <div class="card-body">
+        <form method="post" action="/gastos" enctype="multipart/form-data">
+
+          <div class="mb-3">
+            <label class="form-label">Número de factura *</label>
+            <input type="text" name="numero_factura" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Proveedor *</label>
+            <input type="text" name="proveedor" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">NIF</label>
+            <input type="text" name="nif" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" name="direccion" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Fecha *</label>
+            <input type="date" name="fecha" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Base imponible (€)</label>
+            <input type="number" step="0.01" name="base_imponible" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">IVA (%)</label>
+            <input type="number" step="0.01" name="iva" class="form-control" required value="21">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <input type="text" name="descripcion" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Comprobante (PDF) *</label>
+            <input type="file" name="comprobante" class="form-control" accept="application/pdf">
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">Lista de gastos</div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Fecha</th>
+              <th>Proveedor</th>
+              <th>Descripción</th>
+              <th>Total (€)</th>
+              <th>Comprobante</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for g in gastos %}
+            <tr>
+              <td>{{ g.numero_factura }}</td>
+              <td>{{ g.fecha.strftime("%d/%m/%Y") }}</td>
+              <td>{{ g.proveedor }}</td>
+              <td>{{ g.descripcion }}</td>
+              <td>{{ "%.2f"|format(g.total) }}</td>
+
+              <td>
+                {% if g.comprobante %}
+                <a href="/static/comprobantes/{{ g.comprobante }}" class="btn btn-secondary btn-sm" target="_blank">
+                  📄 Ver
+                </a>
+                {% else %}
+                —
+                {% endif %}
+              </td>
+
+              <td>
+                <a href="/gastos/eliminar/{{ g.id }}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('¿Eliminar este gasto?');">🗑️</a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="7" class="text-center">No hay gastos registrados.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= TOTALES ================= -->
+    <hr>
+    <h5>Totales</h5>
+    <ul>
+      <li><b>Total base imponible:</b> {{ "%.2f"|format(total_base) }} €</li>
+      <li><b>Total IVA:</b> {{ "%.2f"|format(total_iva) }} €</li>
+      <li><b>Total gastado:</b> {{ "%.2f"|format(total_total) }} €</li>
+    </ul>
+    <!-- ============================================ -->
+
+  </div>
+</div>
+{% endblock %}

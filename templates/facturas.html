@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Facturas - Mi app de facturación{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Facturas</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">Crear factura</div>
+      <div class="card-body">
+        <form method="post" action="/facturas">
+          <div class="mb-3">
+            <label class="form-label">Número de factura *</label>
+            <input type="text" name="numero" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="date" name="fecha" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Cliente *</label>
+            <select name="cliente_id" class="form-select" required>
+              <option value="">Seleccionar cliente</option>
+              {% for c in clientes %}
+              <option value="{{ c.id }}">{{ c.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Concepto *</label>
+            <input type="text" name="concepto" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Base imponible (€)</label>
+            <input type="number" step="0.01" name="base_imponible" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">IVA (%)</label>
+            <input type="number" step="0.01" name="iva" class="form-control" required value="21">
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">Lista de facturas</div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Concepto</th>
+              <th>Total (€)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in facturas %}
+            <tr>
+              <td>{{ f.numero }}</td>
+              <td>{{ f.fecha.strftime("%d/%m/%Y") }}</td>
+              <td>{{ f.cliente.nombre if f.cliente else "—" }}</td>
+              <td>{{ f.concepto }}</td>
+              <td>{{ "%.2f"|format(f.total) }}</td>
+              <td>
+                <a href="/facturas/pdf/{{ f.id }}" class="btn btn-secondary btn-sm">📄 PDF</a>
+                <a href="/facturas/eliminar/{{ f.id }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta factura?');">🗑️</a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center">No hay facturas aún.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- =============== TOTALES =============== -->
+    <hr>
+    <h5>Totales</h5>
+    <ul>
+      <li><b>Total base imponible:</b> {{ "%.2f"|format(total_base) }} €</li>
+      <li><b>Total IVA:</b> {{ "%.2f"|format(total_iva) }} €</li>
+      <li><b>Total facturado:</b> {{ "%.2f"|format(total_total) }} €</li>
+    </ul>
+    <!-- =========== FIN TOTALES =========== -->
+
+  </div>
+</div>
+
+{% endblock %}
