@@ -1,0 +1,14 @@
+body {
+    font-size: 0.95rem;
+}
+
+.banner-dashboard {
+    background-image: url("/static/patterns/pattern.png");
+    background-size: 180px;        /* tamaño del patrón */
+    background-repeat: repeat;     /* repetir el patrón */
+    background-position: center;  
+    padding: 40px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+}
